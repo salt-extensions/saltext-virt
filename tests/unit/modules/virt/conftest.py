@@ -166,9 +166,7 @@ def make_mock_storage_pool():
                     <path>{}</path>
                 </target>
             </pool>
-            """.format(
-            type, source, pool_path
-        )
+            """.format(type, source, pool_path)
         mocked_pool.name.return_value = name
         mocked_pool.info.return_value = [
             virt.libvirt.VIR_STORAGE_POOL_RUNNING,

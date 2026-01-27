@@ -23,8 +23,7 @@ def test_node_devices(make_mock_device):
     Test the virt.node_devices() function
     """
     mock_devs = [
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>pci_1002_71c4</name>
               <parent>pci_8086_27a1</parent>
@@ -39,11 +38,9 @@ def test_node_devices(make_mock_device):
                 <numa node='1'/>
               </capability>
             </device>
-        """
-        ),
+        """),
         # Linux USB hub to be ignored
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>usb_device_1d6b_1_0000_00_1d_0</name>
               <parent>pci_8086_27c8</parent>
@@ -54,11 +51,9 @@ def test_node_devices(make_mock_device):
                 <vendor id='0x1d6b'>Linux Foundation</vendor>
               </capability>
             </device>
-        """
-        ),
+        """),
         # SR-IOV PCI device with multiple capabilities
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>pci_0000_02_10_7</name>
               <parent>pci_0000_00_04_0</parent>
@@ -88,11 +83,9 @@ def test_node_devices(make_mock_device):
                 </pci-express>
               </capability>
             </device>
-        """
-        ),
+        """),
         # PCI bridge to be ignored
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>pci_0000_00_1c_0</name>
               <parent>computer</parent>
@@ -114,11 +107,9 @@ def test_node_devices(make_mock_device):
                 </pci-express>
               </capability>
             </device>
-        """
-        ),
+        """),
         # Other device to be ignored
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>mdev_3627463d_b7f0_4fea_b468_f1da537d301b</name>
               <parent>computer</parent>
@@ -127,11 +118,9 @@ def test_node_devices(make_mock_device):
                 <iommuGroup number='12'/>
               </capability>
             </device>
-        """
-        ),
+        """),
         # USB device to be listed
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>usb_3_1_3</name>
               <path>/sys/devices/pci0000:00/0000:00:1d.6/0000:06:00.0/0000:07:02.0/0000:3e:00.0/usb3/3-1/3-1.3</path>
@@ -147,11 +136,9 @@ def test_node_devices(make_mock_device):
                 <vendor id='0x0458'>KYE Systems Corp. (Mouse Systems)</vendor>
               </capability>
             </device>
-        """
-        ),
+        """),
         # Network device to be listed
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>net_eth8_e6_86_48_46_c5_29</name>
               <path>/sys/devices/pci0000:3a/0000:3a:00.0/0000:3b:00.0/0000:3c:03.0/0000:3d:02.2/net/eth8</path>
@@ -162,11 +149,9 @@ def test_node_devices(make_mock_device):
                 <link state='down'/>
               </capability>
             </device>
-            """
-        ),
+            """),
         # Network device to be ignored
-        make_mock_device(
-            """
+        make_mock_device("""
             <device>
               <name>net_lo_00_00_00_00_00_00</name>
               <path>/sys/devices/virtual/net/lo</path>
@@ -177,8 +162,7 @@ def test_node_devices(make_mock_device):
                 <link state='unknown'/>
               </capability>
             </device>
-            """
-        ),
+            """),
     ]
     virt.libvirt.openAuth().listAllDevices.return_value = mock_devs
 
