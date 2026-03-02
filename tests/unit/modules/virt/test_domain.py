@@ -785,8 +785,7 @@ def test_init_hostdev_usb(make_capabilities, make_mock_device):
     Test virt.init with USB host device passed through
     """
     make_capabilities()
-    make_mock_device(
-        """
+    make_mock_device("""
         <device>
           <name>usb_3_1_3</name>
           <path>/sys/devices/pci0000:00/0000:00:1d.6/0000:06:00.0/0000:07:02.0/0000:3e:00.0/usb3/3-1/3-1.3</path>
@@ -802,23 +801,20 @@ def test_init_hostdev_usb(make_capabilities, make_mock_device):
             <vendor id='0x0458'>KYE Systems Corp. (Mouse Systems)</vendor>
           </capability>
         </device>
-    """
-    )
+    """)
     with patch.dict(virt.os.__dict__, {"chmod": MagicMock(), "makedirs": MagicMock()}):
         with patch.dict(virt.__salt__, {"cmd.run": MagicMock()}):
             virt.init("test_vm", 2, 2048, host_devices=["usb_3_1_3"], start=False)
             define_mock = virt.libvirt.openAuth().defineXML
             setxml = ET.fromstring(define_mock.call_args[0][0])
-            expected_xml = strip_xml(
-                """
+            expected_xml = strip_xml("""
                 <hostdev mode='subsystem' type='usb'>
                   <source>
                     <vendor id='0x0458'/>
                     <product id='0x6006'/>
                   </source>
                 </hostdev>
-                """
-            )
+                """)
             assert strip_xml(ET.tostring(setxml.find("./devices/hostdev"))) == expected_xml
 
 
@@ -827,8 +823,7 @@ def test_init_hostdev_pci(make_capabilities, make_mock_device):
     Test virt.init with PCI host device passed through
     """
     make_capabilities()
-    make_mock_device(
-        """
+    make_mock_device("""
         <device>
           <name>pci_1002_71c4</name>
           <parent>pci_8086_27a1</parent>
@@ -843,22 +838,19 @@ def test_init_hostdev_pci(make_capabilities, make_mock_device):
             <numa node='1'/>
           </capability>
         </device>
-    """
-    )
+    """)
     with patch.dict(virt.os.__dict__, {"chmod": MagicMock(), "makedirs": MagicMock()}):
         with patch.dict(virt.__salt__, {"cmd.run": MagicMock()}):
             virt.init("test_vm", 2, 2048, host_devices=["pci_1002_71c4"], start=False)
             define_mock = virt.libvirt.openAuth().defineXML
             setxml = ET.fromstring(define_mock.call_args[0][0])
-            expected_xml = strip_xml(
-                """
+            expected_xml = strip_xml("""
                 <hostdev mode='subsystem' type='pci' managed='yes'>
                   <source>
                     <address domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
                   </source>
                 </hostdev>
-                """
-            )
+                """)
             assert strip_xml(ET.tostring(setxml.find("./devices/hostdev"))) == expected_xml
 
 
@@ -897,8 +889,7 @@ def test_update_hostdev_nochange(make_mock_device, make_mock_vm):
     #  pylint: disable-next=unused-variable
     domain_mock = make_mock_vm(xml_def)
 
-    make_mock_device(
-        """
+    make_mock_device("""
         <device>
           <name>usb_3_1_3</name>
           <path>/sys/devices/pci0000:00/0000:00:1d.6/0000:06:00.0/0000:07:02.0/0000:3e:00.0/usb3/3-1/3-1.3</path>
@@ -914,10 +905,8 @@ def test_update_hostdev_nochange(make_mock_device, make_mock_vm):
             <vendor id='0x0458'>KYE Systems Corp. (Mouse Systems)</vendor>
           </capability>
         </device>
-    """
-    )
-    make_mock_device(
-        """
+    """)
+    make_mock_device("""
         <device>
           <name>pci_1002_71c4</name>
           <parent>pci_8086_27a1</parent>
@@ -932,8 +921,7 @@ def test_update_hostdev_nochange(make_mock_device, make_mock_vm):
             <numa node='1'/>
           </capability>
         </device>
-    """
-    )
+    """)
 
     ret = virt.update("my_vm", host_devices=["pci_1002_71c4", "usb_3_1_3"])
 
@@ -972,8 +960,7 @@ def test_update_hostdev_changes(running, live, make_mock_device, make_mock_vm, t
         </domain>"""
     domain_mock = make_mock_vm(xml_def, running)
 
-    make_mock_device(
-        """
+    make_mock_device("""
         <device>
           <name>usb_3_1_3</name>
           <path>/sys/devices/pci0000:00/0000:00:1d.6/0000:06:00.0/0000:07:02.0/0000:3e:00.0/usb3/3-1/3-1.3</path>
@@ -989,11 +976,9 @@ def test_update_hostdev_changes(running, live, make_mock_device, make_mock_vm, t
             <vendor id='0x0458'>KYE Systems Corp. (Mouse Systems)</vendor>
           </capability>
         </device>
-    """
-    )
+    """)
 
-    make_mock_device(
-        """
+    make_mock_device("""
             <device>
               <name>pci_1002_71c4</name>
               <parent>pci_8086_27a1</parent>
@@ -1008,8 +993,7 @@ def test_update_hostdev_changes(running, live, make_mock_device, make_mock_vm, t
                 <numa node='1'/>
               </capability>
             </device>
-        """
-    )
+        """)
 
     #  pylint: disable-next=unused-variable
     ret = virt.update("my_vm", host_devices=["usb_3_1_3"], test=test, live=live)
@@ -1017,16 +1001,14 @@ def test_update_hostdev_changes(running, live, make_mock_device, make_mock_vm, t
     assert_called(define_mock, not test)
 
     # Test that the XML is updated with the proper devices
-    usb_device_xml = strip_xml(
-        """
+    usb_device_xml = strip_xml("""
         <hostdev mode="subsystem" type="usb">
           <source>
            <vendor id="0x0458" />
            <product id="0x6006" />
           </source>
         </hostdev>
-        """
-    )
+        """)
     if not test:
         set_xml = ET.fromstring(define_mock.call_args[0][0])
         actual_hostdevs = [
@@ -1038,16 +1020,14 @@ def test_update_hostdev_changes(running, live, make_mock_device, make_mock_vm, t
         attach_xml = strip_xml(domain_mock.attachDevice.call_args[0][0])
         assert attach_xml == usb_device_xml
 
-        pci_device_xml = strip_xml(
-            """
+        pci_device_xml = strip_xml("""
                 <hostdev mode='subsystem' type='pci' managed='yes'>
                   <source>
                     <address domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
                   </source>
                   <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
                 </hostdev>
-            """
-        )
+            """)
         detach_xml = strip_xml(domain_mock.detachDevice.call_args[0][0])
         assert detach_xml == pci_device_xml
     else:
@@ -1059,8 +1039,7 @@ def test_diff_nics():
     """
     Test virt._diff_nics()
     """
-    old_nics = ET.fromstring(
-        """
+    old_nics = ET.fromstring("""
         <devices>
            <interface type='network'>
              <mac address='52:54:00:39:02:b1'/>
@@ -1081,11 +1060,9 @@ def test_diff_nics():
              <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
            </interface>
         </devices>
-    """
-    ).findall("interface")
+    """).findall("interface")
 
-    new_nics = ET.fromstring(
-        """
+    new_nics = ET.fromstring("""
         <devices>
            <interface type='network'>
              <mac address='52:54:00:39:02:b1'/>
@@ -1103,8 +1080,7 @@ def test_diff_nics():
              <model type='virtio'/>
            </interface>
         </devices>
-    """
-    ).findall("interface")
+    """).findall("interface")
     ret = virt._diff_interface_lists(old_nics, new_nics)
     assert [nic.find("mac").get("address") for nic in ret["unchanged"]] == ["52:54:00:39:02:b1"]
     assert [nic.find("mac").get("address") for nic in ret["new"]] == [
@@ -1122,8 +1098,7 @@ def test_diff_nics_live_nochange():
     Libvirt alters the NICs of network type when running the guest, test the virt._diff_nics()
     function with no change in such a case.
     """
-    old_nics = ET.fromstring(
-        """
+    old_nics = ET.fromstring("""
         <devices>
           <interface type='direct'>
             <mac address='52:54:00:03:02:15'/>
@@ -1142,11 +1117,9 @@ def test_diff_nics_live_nochange():
             <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
           </interface>
         </devices>
-        """
-    ).findall("interface")
+        """).findall("interface")
 
-    new_nics = ET.fromstring(
-        """
+    new_nics = ET.fromstring("""
         <devices>
            <interface type='network'>
              <source network='test-vepa'/>
@@ -1157,8 +1130,7 @@ def test_diff_nics_live_nochange():
              <model type='virtio'/>
            </interface>
         </devices>
-        """
-    )
+        """)
     ret = virt._diff_interface_lists(old_nics, new_nics)
     assert [nic.find("mac").get("address") for nic in ret["unchanged"]] == [
         "52:54:00:03:02:15",
@@ -1212,8 +1184,7 @@ def test_update_nic_hostdev_nochange(make_mock_network, make_mock_vm, test):
         inactive_def=xml_def_template.format(inactive_nic),
     )
 
-    make_mock_network(
-        """
+    make_mock_network("""
         <network connections='1'>
           <name>test-hostdev</name>
           <uuid>51d0aaa5-7530-4c60-8498-5bc3ab8c655b</uuid>
@@ -1223,8 +1194,7 @@ def test_update_nic_hostdev_nochange(make_mock_network, make_mock_vm, test):
             <address type='pci' domain='0x0000' bus='0x3d' slot='0x02' function='0x1'/>
           </forward>
         </network>
-        """
-    )
+        """)
 
     ret = virt.update(
         "my_vm",
@@ -1399,8 +1369,7 @@ def test_update_bootdev_unchanged(make_mock_vm, boot_dev):
     Test virt.update(), unchanged boot devices case
     """
     #  pylint: disable-next=unused-variable
-    domain_mock = make_mock_vm(
-        """
+    domain_mock = make_mock_vm("""
             <domain type='kvm' id='7'>
               <name>my_vm</name>
               <memory unit='KiB'>1048576</memory>
@@ -1412,8 +1381,7 @@ def test_update_bootdev_unchanged(make_mock_vm, boot_dev):
                 <boot dev="hd"/>
               </os>
             </domain>
-        """
-    )
+        """)
     ret = virt.update("my_vm", boot_dev=boot_dev)
     assert ret["definition"] == (boot_dev != "hd")
     if boot_dev == "hd":
@@ -1490,8 +1458,7 @@ def test_update_boot_uefi_auto_nochange(make_mock_vm):
     libvirt converts the efi=True value into a loader and nvram config with path.
     """
     #  pylint: disable-next=unused-variable
-    domain_mock = make_mock_vm(
-        """
+    domain_mock = make_mock_vm("""
         <domain type='kvm' id='1'>
           <name>my_vm</name>
           <uuid>27434df0-706d-4603-8ad7-5a88d19a3417</uuid>
@@ -1508,8 +1475,7 @@ def test_update_boot_uefi_auto_nochange(make_mock_vm):
           </os>
           <on_reboot>restart</on_reboot>
         </domain>
-        """
-    )
+        """)
 
     ret = virt.update("my_vm", boot={"efi": True})
     assert not ret["definition"]
@@ -1769,8 +1735,7 @@ def test_update_graphics(make_mock_vm):
     Test virt.update(), graphics update case
     """
     #  pylint: disable-next=unused-variable
-    domain_mock = make_mock_vm(
-        """
+    domain_mock = make_mock_vm("""
         <domain type='kvm' id='7'>
           <name>my_vm</name>
           <memory unit='KiB'>1048576</memory>
@@ -1786,8 +1751,7 @@ def test_update_graphics(make_mock_vm):
             </graphics>
           </devices>
         </domain>
-        """
-    )
+        """)
     assert virt.update("my_vm", graphics={"type": "vnc"}) == {
         "definition": True,
         "disk": {"attached": [], "detached": [], "updated": []},
@@ -1802,8 +1766,7 @@ def test_update_console(make_mock_vm):
     Test virt.update(), console and serial devices update case
     """
     #  pylint: disable-next=unused-variable
-    domain_mock = make_mock_vm(
-        """
+    domain_mock = make_mock_vm("""
         <domain type='kvm' id='7'>
           <name>my_vm</name>
           <memory unit='KiB'>1048576</memory>
@@ -1820,8 +1783,7 @@ def test_update_console(make_mock_vm):
             <console type='pty'/>
           </devices>
         </domain>
-        """
-    )
+        """)
 
     assert virt.update("my_vm", serials=[{"type": "tcp"}], consoles=[{"type": "tcp"}]) == {
         "definition": True,
@@ -1868,9 +1830,7 @@ def test_update_disks(make_mock_vm):
             </disk>
           </devices>
         </domain>
-    """.format(
-        root_dir, os.sep
-    )
+    """.format(root_dir, os.sep)
     domain_mock = make_mock_vm(xml_def)
 
     mock_chmod = MagicMock()
@@ -1942,9 +1902,7 @@ def test_update_disks_existing_block(make_mock_vm):
             </disk>
           </devices>
         </domain>
-    """.format(
-        root_dir, os.sep
-    )
+    """.format(root_dir, os.sep)
     domain_mock = make_mock_vm(xml_def)
 
     mock_chmod = MagicMock()
@@ -1986,8 +1944,7 @@ def test_update_nics(make_mock_vm):
     """
     Test virt.update() with NIC device changes
     """
-    domain_mock = make_mock_vm(
-        """
+    domain_mock = make_mock_vm("""
         <domain type='kvm' id='7'>
           <name>my_vm</name>
           <memory unit='KiB'>1048576</memory>
@@ -2016,17 +1973,14 @@ def test_update_nics(make_mock_vm):
             </interface>
           </devices>
         </domain>
-        """
-    )
-    mock_config = salt.utils.yaml.safe_load(
-        """
+        """)
+    mock_config = salt.utils.yaml.safe_load("""
           virt:
              nic:
                 myprofile:
                    - network: default
                      name: eth0
-        """
-    )
+        """)
     with patch.dict(salt.modules.config.__opts__, mock_config):
         ret = virt.update(
             "my_vm",
@@ -2085,9 +2039,7 @@ def test_update_remove_disks_nics(make_mock_vm):
             </interface>
           </devices>
         </domain>
-    """.format(
-        root_dir, os.sep
-    )
+    """.format(root_dir, os.sep)
     domain_mock = make_mock_vm(xml_def)
 
     ret = virt.update("my_vm", nic_profile=None, interfaces=[], disk_profile=None, disks=[])
@@ -2166,9 +2118,7 @@ def test_update_no_change(make_mock_vm, make_mock_storage_pool):
             <console type='pty'/>
           </devices>
         </domain>
-    """.format(
-        root_dir, os.sep
-    )
+    """.format(root_dir, os.sep)
     #  pylint: disable-next=unused-variable
     domain_mock = make_mock_vm(xml_def)
 

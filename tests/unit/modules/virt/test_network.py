@@ -81,8 +81,7 @@ def test_gen_xml_nat():
     assert root.find("name").text == "network"
     assert root.find("bridge").attrib["name"] == "main"
     assert root.find("forward").attrib["mode"] == "nat"
-    expected_ipv4 = ET.fromstring(
-        """
+    expected_ipv4 = ET.fromstring("""
         <ip family='ipv4' address='192.168.2.1' prefix='24'>
           <dhcp>
             <range start='192.168.2.10' end='192.168.2.25'/>
@@ -92,31 +91,26 @@ def test_gen_xml_nat():
           </dhcp>
           <tftp root='/path/to/tftp'/>
         </ip>
-        """
-    )
+        """)
     assert_xml_equals(root.find("./ip[@address='192.168.2.1']"), expected_ipv4)
 
-    expected_ipv6 = ET.fromstring(
-        """
+    expected_ipv6 = ET.fromstring("""
         <ip family='ipv6' address='2001:db8:ca2:2::1' prefix='64'>
           <dhcp>
             <host ip='2001:db8:ca2:2:3::1' name='paul'/>
             <host ip='2001:db8:ca2:2:3::2' id='0:3:0:1:0:16:3e:11:22:33' name='ralph'/>
           </dhcp>
         </ip>
-        """
-    )
+        """)
     assert_xml_equals(root.find("./ip[@address='2001:db8:ca2:2::1']"), expected_ipv6)
 
     actual_nat = ET.tostring(xmlutil.strip_spaces(root.find("./forward/nat")))
-    expected_nat = strip_xml(
-        """
+    expected_nat = strip_xml("""
         <nat>
           <address start='1.2.3.4' end='1.2.3.10'/>
           <port start='500' end='1000'/>
         </nat>
-        """
-    )
+        """)
     assert actual_nat == expected_nat
 
     assert root.find("./domain").attrib == {"name": "acme.lab", "localOnly": "yes"}
@@ -164,8 +158,7 @@ def test_gen_xml_dns():
         },
     )
     root = ET.fromstring(xml_data)
-    expected_xml = ET.fromstring(
-        """
+    expected_xml = ET.fromstring("""
         <dns>
           <forwarder domain='example.com' addr='192.168.1.1'/>
           <forwarder addr='8.8.8.8'/>
@@ -179,8 +172,7 @@ def test_gen_xml_dns():
           <srv service='srv1' protocol='tcp' port='1024' target='.' priority='10' weight='10' domain='test-domain-name'/>
           <srv service='srv2' protocol='udp'/>
         </dns>
-        """
-    )
+        """)
     assert_xml_equals(root.find("./dns"), expected_xml)
 
 
@@ -224,14 +216,12 @@ def test_gen_xml_hostdev_addresses():
         addresses="0000:04:00.1 0000:e3:01.2",
     )
     root = ET.fromstring(xml_data)
-    expected_forward = ET.fromstring(
-        """
+    expected_forward = ET.fromstring("""
         <forward mode='hostdev' managed='yes'>
           <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x1'/>
           <address type='pci' domain='0x0000' bus='0xe3' slot='0x01' function='0x2'/>
         </forward>
-        """
-    )
+        """)
     assert_xml_equals(root.find("./forward"), expected_forward)
 
 
@@ -241,13 +231,11 @@ def test_gen_xml_hostdev_pf():
     """
     xml_data = virt._gen_net_xml("network", "virbr0", "hostdev", None, physical_function="eth0")
     root = ET.fromstring(xml_data)
-    expected_forward = strip_xml(
-        """
+    expected_forward = strip_xml("""
         <forward mode='hostdev' managed='yes'>
           <pf dev='eth0'/>
         </forward>
-        """
-    )
+        """)
     actual_forward = ET.tostring(xmlutil.strip_spaces(root.find("./forward")))
     assert actual_forward == expected_forward
 
@@ -269,8 +257,7 @@ def test_gen_xml_openvswitch():
             "tags": [{"id": 42, "nativeMode": "untagged"}, {"id": 47}],
         },
     )
-    expected_xml = ET.fromstring(
-        """
+    expected_xml = ET.fromstring("""
         <network>
           <name>network</name>
           <bridge name='ovsbr0'/>
@@ -283,8 +270,7 @@ def test_gen_xml_openvswitch():
             <tag id='47'/>
           </vlan>
         </network>
-        """
-    )
+        """)
     assert_xml_equals(ET.fromstring(xml_data), expected_xml)
 
 
@@ -311,8 +297,7 @@ def test_define(make_mock_network, autostart, start):
         start=start,
     )
 
-    expected_xml = strip_xml(
-        """
+    expected_xml = strip_xml("""
         <network>
           <name>default</name>
           <bridge name='test-br0'/>
@@ -323,8 +308,7 @@ def test_define(make_mock_network, autostart, start):
             </dhcp>
           </ip>
         </network>
-        """
-    )
+        """)
     define_mock = virt.libvirt.openAuth().networkDefineXML
     assert strip_xml(define_mock.call_args[0][0]) == expected_xml
 
@@ -341,8 +325,7 @@ def test_update_nat_nochange(make_mock_network):
     Test updating a NAT network without changes
     """
     #  pylint: disable-next=unused-variable
-    net_mock = make_mock_network(
-        """
+    net_mock = make_mock_network("""
         <network>
           <name>default</name>
           <uuid>d6c95a31-16a2-473a-b8cd-7ad2fe2dd855</uuid>
@@ -362,8 +345,7 @@ def test_update_nat_nochange(make_mock_network):
             </dhcp>
           </ip>
         </network>
-        """
-    )
+        """)
     assert not virt.network_update(
         "default",
         None,
@@ -392,8 +374,7 @@ def test_update_nat_change(make_mock_network, test, netmask):
     Test updating a NAT network with changes
     """
     #  pylint: disable-next=unused-variable
-    net_mock = make_mock_network(
-        """
+    net_mock = make_mock_network("""
         <network>
           <name>default</name>
           <uuid>d6c95a31-16a2-473a-b8cd-7ad2fe2dd855</uuid>
@@ -407,10 +388,7 @@ def test_update_nat_change(make_mock_network, test, netmask):
             </dhcp>
           </ip>
         </network>
-        """.format(
-            netmask
-        )
-    )
+        """.format(netmask))
     assert virt.network_update(
         "default",
         "test-br0",
@@ -426,8 +404,7 @@ def test_update_nat_change(make_mock_network, test, netmask):
 
     if not test:
         # Test the passed new XML
-        expected_xml = strip_xml(
-            """
+        expected_xml = strip_xml("""
             <network>
               <name>default</name>
               <mac address='52:54:00:cd:49:6b'/>
@@ -440,8 +417,7 @@ def test_update_nat_change(make_mock_network, test, netmask):
                 </dhcp>
               </ip>
             </network>
-            """
-        )
+            """)
         assert strip_xml(define_mock.call_args[0][0]) == expected_xml
 
 
@@ -451,8 +427,7 @@ def test_update_hostdev_pf(make_mock_network, change):
     Test updating a hostdev network without changes
     """
     #  pylint: disable-next=unused-variable
-    net_mock = make_mock_network(
-        """
+    net_mock = make_mock_network("""
         <network connections='1'>
           <name>test-hostdev</name>
           <uuid>51d0aaa5-7530-4c60-8498-5bc3ab8c655b</uuid>
@@ -462,8 +437,7 @@ def test_update_hostdev_pf(make_mock_network, change):
             <address type='pci' domain='0x0000' bus='0x3d' slot='0x02' function='0x1'/>
           </forward>
         </network>
-        """
-    )
+        """)
     assert (
         virt.network_update(
             "test-hostdev",

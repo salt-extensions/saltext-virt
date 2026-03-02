@@ -1710,8 +1710,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         """
         Test virt._diff_disks()
         """
-        old_disks = ET.fromstring(
-            """
+        old_disks = ET.fromstring("""
             <devices>
               <disk type='file' device='disk'>
                 <source file='/path/to/img0.qcow2'/>
@@ -1733,11 +1732,9 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                 <target dev='hdc' bus='ide'/>
               </disk>
             </devices>
-        """
-        ).findall("disk")
+        """).findall("disk")
 
-        new_disks = ET.fromstring(
-            """
+        new_disks = ET.fromstring("""
             <devices>
               <disk type='file' device='disk'>
                 <source file='/path/to/img3.qcow2'/>
@@ -1755,8 +1752,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                 <target dev='hda' bus='ide'/>
               </disk>
             </devices>
-        """
-        ).findall("disk")
+        """).findall("disk")
         ret = virt._diff_disk_lists(old_disks, new_disks)
         self.assertEqual(
             [
@@ -4015,8 +4011,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         """
         Test virt.cpu_baseline()
         """
-        capabilities_xml = dedent(
-            """<capabilities>
+        capabilities_xml = dedent("""<capabilities>
                   <host>
                     <uuid>44454c4c-3400-105a-8033-b3c04f4b344a</uuid>
                     <cpu>
@@ -4024,8 +4019,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                       <vendor>Intel</vendor>
                     </cpu>
                   </host>
-                </capabilities>"""
-        )
+                </capabilities>""")
 
         baseline_cpu_xml = b"""<cpu match="exact" mode="custom">
                                   <vendor>Intel</vendor>
@@ -6029,9 +6023,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                       <name>vm{}</name>
                       <devices>{}</devices>
                     </domain>
-                """.format(
-                idx, disk
-            )
+                """.format(idx, disk)
             # pylint: enable=no-member
             mock_vms.append(vm)
 
@@ -6097,9 +6089,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                           <format type="qcow2"/>
                           <path>{}</path>
                         </backingStore>
-                    """.format(
-                            vol_data["backingStore"]
-                        )
+                    """.format(vol_data["backingStore"])
                         if vol_data["backingStore"]
                         else "<backingStore/>"
                     )
@@ -6112,9 +6102,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                           </target>
                           {1}
                         </volume>
-                    """.format(
-                        vol_data["name"], backing_store
-                    )
+                    """.format(vol_data["name"], backing_store)
                 else:
                     mock_volume.info.side_effect = self.mock_libvirt.libvirtError("No such volume")
                     mock_volume.XMLDesc.side_effect = self.mock_libvirt.libvirtError(
