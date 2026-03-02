@@ -15,14 +15,8 @@ jobs:
       max-parallel: 2
       matrix:
         include:
-<<<<<<< before updating
-          - {salt-version: "3006.13", python-version: "3.9"}
-          - {salt-version: "3006.13", python-version: "3.10"}
-          - {salt-version: "3007.5", python-version: "3.10"}
-=======
           - {salt-version: "3006.19", python-version: "3.10"}
           - {salt-version: "3007.11", python-version: "3.10"}
->>>>>>> after updating
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
