@@ -29,3 +29,5 @@ summary: Salt Extension for interacting with Virt
 test_containers: true
 tracker_url: https://bugzilla.opensuse.org
 url: https://github.com/salt-extensions/saltext-virt
+
+#copier updated
