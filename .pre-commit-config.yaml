@@ -45,8 +45,6 @@ repos:
         files: ^src/saltext/virt/.*\.py$
         args: [--silent]
 
-<<<<<<< before updating
-=======
   - repo: https://github.com/saltstack/salt-rewrite
     # Automatically rewrite code with known rules
     rev: 2401c0faef69b6b846c719d611bcfe358234d5d1  # 2.5.2
@@ -56,7 +54,6 @@ repos:
         name: Rewrite the test suite
         files: ^tests/.*\.py$
         args: [--silent, -E, fix_docstrings]
->>>>>>> after updating
 
   - repo: https://github.com/asottile/pyupgrade
     rev: 75992aaa40730136014f34227e0135f63fc951b4  # v3.21.2
