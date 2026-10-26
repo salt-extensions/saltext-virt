@@ -6771,7 +6771,7 @@ def cpu_baseline(full=False, migratable=False, out="libvirt", **kwargs):
                 cpu_model = model_node.get("name")
 
             #  pylint: disable-next=unnecessary-comprehension
-            cpu.extend([feature for feature in cpu_specs.findall("feature")])
+            cpu.extend([*cpu_specs.findall("feature")])
 
     if out == "salt":
         return {
