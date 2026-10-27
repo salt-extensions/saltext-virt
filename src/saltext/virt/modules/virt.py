@@ -2318,7 +2318,7 @@ def init(
 
     :param host_devices:
         List of host devices to passthrough to the guest.
-        The value is a list of device names as provided by the :py:func:`~salt.modules.virt.node_devices` function.
+        The value is a list of device names as provided by the :py:func:`~saltext.virt.modules.virt.node_devices` function.
         (Default: ``None``)
 
         .. versionadded:: 3003
@@ -3656,7 +3656,7 @@ def update(
 
     :param host_devices:
         List of host devices to passthrough to the guest.
-        The value is a list of device names as provided by the :py:func:`~salt.modules.virt.node_devices` function.
+        The value is a list of device names as provided by the :py:func:`~saltext.virt.modules.virt.node_devices` function.
         (Default: ``None``)
 
         .. versionadded:: 3003

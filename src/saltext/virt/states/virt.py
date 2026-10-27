@@ -596,7 +596,7 @@ def defined(
 
     :param host_devices:
         List of host devices to passthrough to the guest.
-        The value is a list of device names as provided by the :py:func:`~salt.modules.virt.node_devices` function.
+        The value is a list of device names as provided by the :py:func:`~saltext.virt.modules.virt.node_devices` function.
         (Default: ``None``)
 
         .. versionadded:: 3003
@@ -954,7 +954,7 @@ def running(
 
     :param host_devices:
         List of host devices to passthrough to the guest.
-        The value is a list of device names as provided by the :py:func:`~salt.modules.virt.node_devices` function.
+        The value is a list of device names as provided by the :py:func:`~saltext.virt.modules.virt.node_devices` function.
         (Default: ``None``)
 
         .. versionadded:: 3003
@@ -1142,7 +1142,7 @@ def rebooted(name, connection=None, username=None, password=None):
 def unpowered(name):
     """
     .. deprecated:: 2016.3.0
-       Use :py:func:`~salt.modules.virt.powered_off` instead.
+       Use :py:func:`~saltext.virt.modules.virt.powered_off` instead.
 
     Stops a VM by power off.
 
@@ -1160,7 +1160,7 @@ def unpowered(name):
 def saved(name, suffix=None):
     """
     .. deprecated:: 2016.3.0
-       Use :py:func:`~salt.modules.virt.snapshot` instead.
+       Use :py:func:`~saltext.virt.modules.virt.snapshot` instead.
 
     Takes a snapshot of a particular VM or by a UNIX-style wildcard.
 
@@ -1309,13 +1309,13 @@ def network_defined(
 
     :param ipv4_config:
         IPv4 network configuration. See the
-        :py:func:`virt.network_define <salt.modules.virt.network_define>`
+        :py:func:`virt.network_define <saltext.virt.modules.virt.network_define>`
         function corresponding parameter documentation
         for more details on this dictionary.
         (Default: None).
     :param ipv6_config:
         IPv6 network configuration. See the :py:func:`virt.network_define
-        <salt.modules.virt.network_define>` function corresponding parameter documentation
+        <saltext.virt.modules.virt.network_define>` function corresponding parameter documentation
         for more details on this dictionary.
         (Default: None).
     :param autostart: Network autostart (default ``'True'``)
@@ -1627,14 +1627,14 @@ def network_running(
 
     :param ipv4_config:
         IPv4 network configuration. See the :py:func`virt.network_define
-        <salt.modules.virt.network_define>` function corresponding parameter documentation
+        <saltext.virt.modules.virt.network_define>` function corresponding parameter documentation
         for more details on this dictionary.
         (Default: None).
 
         .. versionadded:: 3000
     :param ipv6_config:
         IPv6 network configuration. See the :py:func`virt.network_define
-        <salt.modules.virt.network_define>` function corresponding parameter documentation
+        <saltext.virt.modules.virt.network_define>` function corresponding parameter documentation
         for more details on this dictionary.
         (Default: None).
 
@@ -1858,7 +1858,7 @@ def pool_defined(
         target permissions. See :ref:`pool-define-permissions` for more details on this structure.
     :param source:
         dictionary containing keys matching the ``source_*`` parameters in function
-        :func:`salt.modules.virt.pool_define`.
+        :func:`saltext.virt.modules.virt.pool_define`.
     :param transient:
         when set to ``True``, the pool will be automatically undefined after being stopped. (Default: ``False``)
     :param autostart:
@@ -2060,7 +2060,7 @@ def pool_running(
         target permissions. See :ref:`pool-define-permissions` for more details on this structure.
     :param source:
         dictionary containing keys matching the ``source_*`` parameters in function
-        :func:`salt.modules.virt.pool_define`.
+        :func:`saltext.virt.modules.virt.pool_define`.
     :param transient:
         when set to ``True``, the pool will be automatically undefined after being stopped. (Default: ``False``)
     :param autostart:

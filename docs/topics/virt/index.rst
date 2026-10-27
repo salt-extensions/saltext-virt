@@ -49,7 +49,7 @@ virtual machine routines.
 Reference documentation for the virt runner is available with the runner
 module documentation:
 
-:py:mod:`Virt Runner Reference <salt.modules.virt>`
+:py:mod:`Virt Runner Reference <saltext.virt.modules.virt>`
 
 Based on Live State Data
 ========================
