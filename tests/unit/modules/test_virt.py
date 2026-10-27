@@ -4154,8 +4154,8 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
             virt._parse_qemu_img_info(qemu_infos),
         )
 
-    @patch("salt.modules.virt.stop", return_value=True)
-    @patch("salt.modules.virt.undefine")
+    @patch("saltext.virt.modules.virt.stop", return_value=True)
+    @patch("saltext.virt.modules.virt.undefine")
     @patch("os.remove")
     #  pylint: disable-next=unused-argument
     def test_purge_default(self, mock_remove, mock_undefine, mock_stop):
@@ -4208,8 +4208,8 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
             mock_remove.assert_called_once()
             mock_remove.assert_any_call("/disks/test.qcow2")
 
-    @patch("salt.modules.virt.stop", return_value=True)
-    @patch("salt.modules.virt.undefine")
+    @patch("saltext.virt.modules.virt.stop", return_value=True)
+    @patch("saltext.virt.modules.virt.undefine")
     #  pylint: disable-next=unused-argument
     def test_purge_volumes(self, mock_undefine, mock_stop):
         """
@@ -4269,8 +4269,8 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
             self.assertTrue(res)
             pool_mock.storageVolLookupByName.return_value.delete.assert_called_once()
 
-    @patch("salt.modules.virt.stop", return_value=True)
-    @patch("salt.modules.virt.undefine")
+    @patch("saltext.virt.modules.virt.stop", return_value=True)
+    @patch("saltext.virt.modules.virt.undefine")
     #  pylint: disable-next=unused-argument
     def test_purge_rbd(self, mock_undefine, mock_stop):
         """
@@ -4341,8 +4341,8 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
             self.assertTrue(res)
             pool_mock.storageVolLookupByName.return_value.delete.assert_called_once()
 
-    @patch("salt.modules.virt.stop", return_value=True)
-    @patch("salt.modules.virt.undefine")
+    @patch("saltext.virt.modules.virt.stop", return_value=True)
+    @patch("saltext.virt.modules.virt.undefine")
     @patch("os.remove")
     #  pylint: disable-next=unused-argument
     def test_purge_removable(self, mock_remove, mock_undefine, mock_stop):
